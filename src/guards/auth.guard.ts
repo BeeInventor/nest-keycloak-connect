@@ -96,16 +96,15 @@ export class AuthGuard implements CanActivate {
   private async validateToken(jwt: any) {
     const tokenValidation =
       this.keycloakOpts.tokenValidation || TokenValidation.ONLINE;
-
-    const gm = this.keycloak.grantManager;
-    const grant = await gm.createGrant({ access_token: jwt });
-    const token = grant.access_token;
-
-    this.logger.verbose(
-      `Using token validation method: ${tokenValidation.toUpperCase()}`,
-    );
-
     try {
+      const gm = this.keycloak.grantManager;
+      const grant = await gm.createGrant({ access_token: jwt });
+      const token = grant.access_token;
+
+      this.logger.verbose(
+        `Using token validation method: ${tokenValidation.toUpperCase()}`,
+      );
+
       let result: boolean | KeycloakConnect.Token;
 
       switch (tokenValidation) {
